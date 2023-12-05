@@ -1,14 +1,23 @@
 <script setup lang="ts">
-useHead({
-	title: 'Genius',
-	meta: [{ name: 'description', content: 'AI Platform' }],
-})
+const isDark = useDark()
+
+const iconSelect = computed(() =>
+	isDark.value ? '/logo-dark.svg' : '/logo.svg'
+)
 </script>
 
 <template>
+	<Head>
+		<Title>Jotion</Title>
+		<Meta
+			name="description"
+			content="The connected workspace where better, faster work happens."
+		/>
+		<Link rel="icon" type="image/svg+xml" :href="iconSelect" />
+	</Head>
 	<suspense>
-		<NuxtLayout>
-			<NuxtPage />
-		</NuxtLayout>
+		<nuxt-layout>
+			<nuxt-page />
+		</nuxt-layout>
 	</suspense>
 </template>
