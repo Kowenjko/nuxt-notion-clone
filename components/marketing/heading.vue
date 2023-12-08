@@ -15,7 +15,7 @@ const isAuthenticated = ref(false)
 			better, faster work happens.
 		</h3>
 
-		<div v-if="!isLoading" class="w-full flex items-center justify-center">
+		<div v-if="isLoading" class="w-full flex items-center justify-center">
 			<Spinner size="lg" />
 		</div>
 

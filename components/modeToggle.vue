@@ -1,8 +1,20 @@
 <script setup lang="ts">
 import { Moon, Sun } from 'lucide-vue-next'
 
-const { system, store } = useColorMode()
+type BasicColorSchema = 'light' | 'dark' | 'auto'
 
+interface ThemesI {
+	value: BasicColorSchema
+	title: string
+}
+
+const themes: ThemesI[] = [
+	{ value: 'light', title: 'Light' },
+	{ value: 'dark', title: 'Dark' },
+	{ value: 'auto', title: 'System' },
+]
+
+const { system, store } = useColorMode()
 watch(store, () => (store.value === 'auto' ? system.value : store.value))
 </script>
 <template>
@@ -19,11 +31,13 @@ watch(store, () => (store.value === 'auto' ? system.value : store.value))
 			</Button>
 		</DropdownMenuTrigger>
 		<DropdownMenuContent align="end">
-			<DropdownMenuItem @click="store = 'light'"> Light </DropdownMenuItem>
-			<DropdownMenuItem @click="store = 'dark'"> Dark </DropdownMenuItem>
-			<DropdownMenuItem @click="store = 'auto'"> System </DropdownMenuItem>
+			<DropdownMenuItem
+				v-for="theme in themes"
+				:key="theme.value"
+				@click="store = theme.value"
+			>
+				{{ theme.title }}
+			</DropdownMenuItem>
 		</DropdownMenuContent>
 	</DropdownMenu>
 </template>
-
-<style scoped></style>

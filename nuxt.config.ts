@@ -15,6 +15,15 @@ export default defineNuxtConfig({
 			Poppins: true,
 		},
 	},
+	build: {
+		transpile: ['vue-clerk', '@clerk/clerk-js'],
+	},
+	runtimeConfig: {
+		public: {
+			clerkPublishableKey: process.env.CLERK_PUBLISHABLE_KEY,
+		},
+		clerkSecretKey: process.env.CLERK_SECRET_KEY,
+	},
 	shadcn: {
 		prefix: '',
 		componentDir: './components/ui',

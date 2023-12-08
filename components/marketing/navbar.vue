@@ -1,7 +1,15 @@
 <script setup lang="ts">
-const isLoading = ref(false)
-const isAuthenticated = ref(false)
-const scrolled = ref(false)
+import { SignInButton, UserButton, useAuth } from 'vue-clerk'
+
+const loading = ref(true)
+const { isSignedIn, isLoaded } = useAuth()
+const scrolled = useScrollTop()
+
+watch([loading, isLoaded], () => {
+	if (loading.value && isLoaded.value) loading.value = false
+})
+
+onMounted(() => (loading.value = false))
 </script>
 <template>
 	<div
@@ -12,35 +20,26 @@ const scrolled = ref(false)
 	>
 		<MarketingLogo />
 		<div
-			class="md:ml-auto md:justify-end justify-between w-full flex items-center gap-x-2"
+			class="md:ml-auto md:justify-end justify-between w-full flex items-center gap-x-3"
 		>
-			<Spinner v-if="isLoading" />
+			<Spinner v-if="loading" />
 
-			<!-- <template v-if="!isAuthenticated && !isLoading">
-            <SignInButton  mode="modal">
-              <Button variant="ghost" size="sm">
-                Log in
-              </Button>
-            </SignInButton>
-            <SignInButton mode="modal">
-              <Button size="sm">
-                Get Jotion free
-              </Button>
-            </SignInButton>
-          </template> -->
+			<template v-if="!isSignedIn && !loading">
+				<SignInButton afterSignInUrl="/marketing" mode="modal">
+					<Button @click="loading = true" variant="ghost" size="sm">
+						Log in
+					</Button>
+				</SignInButton>
+				<SignInButton afterSignInUrl="/marketing" mode="modal">
+					<Button size="sm"> Get Jotion free </Button>
+				</SignInButton>
+			</template>
 
-			<Button variant="ghost" size="sm"> Log in </Button>
-			<Button variant="ghost" size="sm" asChild>
-				<nuxt-link to="/documents">Enter Jotion</nuxt-link>
-			</Button>
-
-			<template v-if="isAuthenticated && !isLoading">
+			<template v-if="isSignedIn && !loading">
 				<Button variant="ghost" size="sm" asChild>
 					<nuxt-link href="/documents"> Enter Jotion </nuxt-link>
 				</Button>
-				<!-- <UserButton
-              afterSignOutUrl="/"
-            /> -->
+				<UserButton afterSignOutUrl="/marketing" />
 			</template>
 
 			<ModeToggle />

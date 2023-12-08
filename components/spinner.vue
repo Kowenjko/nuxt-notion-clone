@@ -2,7 +2,7 @@
 import { Loader } from 'lucide-vue-next'
 
 interface Props {
-	size: 'default' | 'sm' | 'lg' | 'icon'
+	size?: 'default' | 'sm' | 'lg' | 'icon'
 }
 
 withDefaults(defineProps<Props>(), {
