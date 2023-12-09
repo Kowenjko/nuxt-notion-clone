@@ -65,7 +65,7 @@ watch([isMobile, route], (value) => (value ? collapse() : resetWidth()))
 <template>
 	<aside
 		:class="[
-			'group/sidebar h-screen bg-secondary overflow-y-auto relative flex  flex-col z-[99999]',
+			'group/sidebar h-screen bg-secondary overflow-y-auto relative flex  flex-col z-40',
 			isResetting && 'transition-all ease-in-out duration-300',
 			isMobile && 'w-0',
 		]"
@@ -80,19 +80,21 @@ watch([isMobile, route], (value) => (value ? collapse() : resetWidth()))
 		>
 			<ChevronsLeft class="h-6 w-6" />
 		</button>
-		<div>UserItem {{ route.name }}</div>
+		<div>
+			<DocumentsUserItem />
+		</div>
 
 		<div class="mt-4">DocumentList</div>
 		<div
 			class="opacity-0 group-hover/sidebar:opacity-100 transition cursor-ew-resize absolute h-full w-1 bg-primary/10 right-0 top-0"
 			@click="resetWidth"
 			@mousedown.prevent.stop="handleMouseDown"
-		></div>
+		/>
 	</aside>
 
 	<div
 		:class="[
-			'absolute top-0 z-[99999] ',
+			'absolute top-0 z-40 ',
 			isResetting && 'transition-all ease-in-out duration-300',
 			isMobile && 'left-0 w-full',
 		]"
