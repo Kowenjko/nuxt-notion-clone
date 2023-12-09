@@ -1,15 +1,8 @@
 <script setup lang="ts">
-import { SignInButton, UserButton, useAuth } from 'vue-clerk'
+import { SignInButton, UserButton } from 'vue-clerk'
 
-const loading = ref(true)
-const { isSignedIn, isLoaded } = useAuth()
 const scrolled = useScrollTop()
-
-watch([loading, isLoaded], () => {
-	if (loading.value && isLoaded.value) loading.value = false
-})
-
-onMounted(() => (loading.value = false))
+const { isSignedIn, loading } = useAuthClerk()
 </script>
 <template>
 	<div
@@ -25,12 +18,12 @@ onMounted(() => (loading.value = false))
 			<Spinner v-if="loading" />
 
 			<template v-if="!isSignedIn && !loading">
-				<SignInButton afterSignInUrl="/marketing" mode="modal">
+				<SignInButton afterSignInUrl="/" mode="modal">
 					<Button @click="loading = true" variant="ghost" size="sm">
 						Log in
 					</Button>
 				</SignInButton>
-				<SignInButton afterSignInUrl="/marketing" mode="modal">
+				<SignInButton afterSignInUrl="/" mode="modal">
 					<Button size="sm"> Get Jotion free </Button>
 				</SignInButton>
 			</template>
@@ -39,7 +32,7 @@ onMounted(() => (loading.value = false))
 				<Button variant="ghost" size="sm" asChild>
 					<nuxt-link href="/documents"> Enter Jotion </nuxt-link>
 				</Button>
-				<UserButton afterSignOutUrl="/marketing" />
+				<UserButton afterSignOutUrl="/" />
 			</template>
 
 			<ModeToggle />

@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { SignInButton } from 'vue-clerk'
 import { ArrowRight } from 'lucide-vue-next'
 
-const isLoading = ref(false)
-const isAuthenticated = ref(false)
+const { isSignedIn, loading } = useAuthClerk()
 </script>
 <template>
 	<div class="max-w-3xl space-y-4">
@@ -15,24 +15,27 @@ const isAuthenticated = ref(false)
 			better, faster work happens.
 		</h3>
 
-		<div v-if="isLoading" class="w-full flex items-center justify-center">
+		<div v-if="loading" class="w-full flex items-center justify-center">
 			<Spinner size="lg" />
 		</div>
 
-		<!-- <Button v-if="isAuthenticated && !isLoading" asChild> -->
-		<Button>
+		<Button v-if="isSignedIn && !loading" loading>
 			<NuxtLink to="/documents" class="flex justify-center items-center">
 				Enter Jotion
 				<ArrowRight class="h-4 w-4 ml-2" />
 			</NuxtLink>
 		</Button>
 
-		<!-- <SignInButton v-if="!isAuthenticated && !isLoading" mode="modal">
+		<SignInButton
+			afterSignInUrl="/"
+			v-if="!isSignedIn && !loading"
+			mode="modal"
+		>
 			<Button>
 				Get Jotion free
 				<ArrowRight class="h-4 w-4 ml-2" />
 			</Button>
-		</SignInButton> -->
+		</SignInButton>
 	</div>
 </template>
 
