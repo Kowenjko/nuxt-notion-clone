@@ -1,7 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
 	layout: 'marketing',
-	// middleware: 'public',
+	middleware: 'public',
 })
 </script>
 <template>

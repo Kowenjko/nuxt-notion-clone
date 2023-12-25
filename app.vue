@@ -20,4 +20,5 @@ const iconSelect = computed(() =>
 			<nuxt-page />
 		</nuxt-layout>
 	</suspense>
+	<Toaster position="bottom-center" />
 </template>

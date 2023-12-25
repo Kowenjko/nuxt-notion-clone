@@ -46,7 +46,7 @@ const { user } = useUser()
 				asChild
 				class="w-full cursor-pointer text-muted-foreground"
 			>
-				<SignOutButton> Log out </SignOutButton>
+				<SignOutButton after-sign-out-url="/"> Log out </SignOutButton>
 			</DropdownMenuItem>
 		</DropdownMenuContent>
 	</DropdownMenu>

@@ -3,6 +3,8 @@ import { ChevronsLeft, MenuIcon } from 'lucide-vue-next'
 
 const { width } = useWindowSize()
 const route = useRoute()
+const documentStore = useDocumentsStore()
+const { documents } = storeToRefs(documentStore)
 
 const isMobile = computed<boolean>(() => width.value < 768)
 
@@ -84,7 +86,9 @@ watch([isMobile, route], (value) => (value ? collapse() : resetWidth()))
 			<DocumentsUserItem />
 		</div>
 
-		<div class="mt-4">DocumentList</div>
+		<div class="mt-4" v-for="document in documents" :key="document.$id">
+			{{ document.title }}
+		</div>
 		<div
 			class="opacity-0 group-hover/sidebar:opacity-100 transition cursor-ew-resize absolute h-full w-1 bg-primary/10 right-0 top-0"
 			@click="resetWidth"

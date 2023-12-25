@@ -8,7 +8,9 @@ export default defineNuxtConfig({
 		'@nuxtjs/google-fonts',
 		'@vueuse/nuxt',
 		'@nuxt/image',
+		'@pinia/nuxt',
 	],
+
 	googleFonts: {
 		families: {
 			Inter: true,
@@ -18,11 +20,18 @@ export default defineNuxtConfig({
 	build: {
 		transpile: ['vue-clerk', '@clerk/clerk-js'],
 	},
+	pinia: {
+		storesDirs: ['./stores/**', './custom-folder/stores/**'],
+	},
 	runtimeConfig: {
 		public: {
-			clerkPublishableKey: process.env.CLERK_PUBLISHABLE_KEY,
+			clerkPublishableKey: process.env.CLERK_PUBLISHABLE_KEY || '',
+			appwriteEndpoint: process.env.APPWRITE_ENDPOINT || '',
+			projectID: process.env.APPWRITE_PROJECT_ID || '',
+			databaseID: process.env.APPWRITE_DATABASE_ID || '',
+			collectionID: process.env.APPWRITE_COLLECTION_ID || '',
 		},
-		clerkSecretKey: process.env.CLERK_SECRET_KEY,
+		clerkSecretKey: process.env.CLERK_SECRET_KEY || '',
 	},
 	shadcn: {
 		prefix: '',

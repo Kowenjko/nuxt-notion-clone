@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { isSignedIn, loading } = useAuthClerk()
+const { $toast } = useNuxtApp()
 
 const router = useRouter()
 
