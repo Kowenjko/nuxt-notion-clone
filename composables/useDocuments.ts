@@ -8,16 +8,39 @@ enum EnumAction {
 }
 
 export const useDocuments = async () => {
-	const { getAllDocuments } = await useAppwrite()
-	const { setDocuments, deleteDocument, createDocument } = useDocumentsStore()
+	const router = useRouter()
+	const { $toast } = useNuxtApp()
+	const { getAllDocuments, createDocument, getDocumentsAllParentDocument } =
+		await useAppwrite()
 
-	setDocuments((await getAllDocuments()) as any)
+	const { setDocumentsStore, deleteDocumentStore, createDocumentStore } =
+		useDocumentsStore()
+
+	setDocumentsStore((await getAllDocuments()) as any)
 
 	const changeDocuments = async (action: EnumAction, payload: DocumentI) => {
-		if (action === 'create') createDocument(payload)
-		if (action === 'delete') deleteDocument(payload.$id)
-		if (action === 'update') setDocuments((await getAllDocuments()) as any)
+		if (action === 'create') createDocumentStore(payload)
+		if (action === 'delete') deleteDocumentStore(payload.$id)
+		if (action === 'update') setDocumentsStore((await getAllDocuments()) as any)
 	}
 
-	return { changeDocuments }
+	const getSidebar = async (id: string) => {
+		const documents = await getDocumentsAllParentDocument(id)
+		console.log(documents)
+		return documents
+	}
+
+	const handleCreateDocument = (id: string) => {
+		const promise = createDocument('Untitled', id).then(
+			(document) => console.log(document)
+			// router.push(`/documents/${document?.$id}`)
+		)
+		$toast.promise(promise, {
+			loading: 'Creating a new note...',
+			success: () => 'New note created!',
+			error: () => 'Failed to create a new note.',
+		})
+	}
+
+	return { changeDocuments, handleCreateDocument, getSidebar }
 }

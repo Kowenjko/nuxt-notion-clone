@@ -28,14 +28,27 @@ export const useAppwrite = async () => {
 				collectionID,
 				[Query.orderDesc('$createdAt')]
 			)
-			return documents[0]?.$id || null
+			return documents[0]?.$id || ''
 		} catch (error) {
 			console.log(error)
 		}
 	}
 
-	const createDocument = async (title: string) => {
-		const parentDocument = (await getLastDocumentId()) || ''
+	const getDocumentsAllParentDocument = async (id: string) => {
+		try {
+			const { documents } = await databases.listDocuments(
+				databaseID,
+				collectionID,
+				[Query.equal('parentDocument', [id]), Query.orderDesc('$createdAt')]
+			)
+			return documents
+		} catch (error) {
+			console.log(error)
+		}
+	}
+
+	const createDocument = async (title: string, id: string) => {
+		const parentDocument = id || ''
 		const userId = user.value?.id! || ''
 
 		const newDocument: Partial<DocumentI> = {
@@ -88,8 +101,15 @@ export const useAppwrite = async () => {
 				}
 			}
 		)
+
 		return unsubscribe
 	}
 
-	return { getAllDocuments, createDocument, subscribeDocument }
+	return {
+		getAllDocuments,
+		getLastDocumentId,
+		createDocument,
+		subscribeDocument,
+		getDocumentsAllParentDocument,
+	}
 }

@@ -4,14 +4,23 @@ import type { DocumentI } from '@/interfaces/interfaces'
 export const useDocumentsStore = defineStore('documents', () => {
 	const documents = ref<DocumentI[]>([])
 
-	const setDocuments = (newDocuments: DocumentI[]) =>
+	const setDocumentsStore = (newDocuments: DocumentI[]) =>
 		(documents.value = newDocuments)
 
-	const deleteDocument = (id: string) =>
-		documents.value.filter((document: any) => document.$id !== id)
+	const deleteDocumentStore = (id: string) =>
+		(documents.value = documents.value.filter(
+			(document: any) => document.$id !== id
+		))
 
-	const createDocument = (document: DocumentI) =>
-		(documents.value = [document, ...documents.value])
+	const createDocumentStore = (document: DocumentI) => {
+		if (documents.value.some((el: DocumentI) => el.$id === document.$id)) return
+		documents.value = [document, ...documents.value]
+	}
 
-	return { documents, setDocuments, deleteDocument, createDocument }
+	return {
+		documents,
+		setDocumentsStore,
+		deleteDocumentStore,
+		createDocumentStore,
+	}
 })

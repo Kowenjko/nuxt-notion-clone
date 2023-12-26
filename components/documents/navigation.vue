@@ -1,10 +1,19 @@
 <script setup lang="ts">
-import { ChevronsLeft, MenuIcon } from 'lucide-vue-next'
+import {
+	ChevronsLeft,
+	MenuIcon,
+	Plus,
+	PlusCircle,
+	Search,
+	Settings,
+	Trash,
+} from 'lucide-vue-next'
 
 const { width } = useWindowSize()
 const route = useRoute()
 const documentStore = useDocumentsStore()
 const { documents } = storeToRefs(documentStore)
+const { handleCreateDocument } = await useDocuments()
 
 const isMobile = computed<boolean>(() => width.value < 768)
 
@@ -84,10 +93,30 @@ watch([isMobile, route], (value) => (value ? collapse() : resetWidth()))
 		</button>
 		<div>
 			<DocumentsUserItem />
+			<NavItem :icon="Search" isSearch label="Search" />
+			<NavItem :icon="Settings" label="Settings" />
+			<NavItem
+				:icon="PlusCircle"
+				label="New page"
+				@click="handleCreateDocument('')"
+			/>
 		</div>
 
-		<div class="mt-4" v-for="document in documents" :key="document.$id">
-			{{ document.title }}
+		<div class="mt-4">
+			<DocumentsList />
+			<NavItem
+				@click="handleCreateDocument('')"
+				:icon="Plus"
+				label="Add a page"
+			/>
+			<Popover>
+				<PopoverTrigger class="w-full mt-4">
+					<NavItem label="Trash" :icon="Trash" />
+				</PopoverTrigger>
+				<PopoverContent class="p-0 w-72" :side="isMobile ? 'bottom' : 'right'">
+					<TrashBox />
+				</PopoverContent>
+			</Popover>
 		</div>
 		<div
 			class="opacity-0 group-hover/sidebar:opacity-100 transition cursor-ew-resize absolute h-full w-1 bg-primary/10 right-0 top-0"
@@ -111,5 +140,3 @@ watch([isMobile, route], (value) => (value ? collapse() : resetWidth()))
 		</nav>
 	</div>
 </template>
-
-<style scoped></style>
